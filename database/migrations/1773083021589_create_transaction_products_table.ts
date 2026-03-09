@@ -1,15 +1,15 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'users'
+  protected tableName = 'transaction_products'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('name').notNullable()
-      table.string('email').unique().notNullable()
-      table.string('password').notNullable()
-      table.enum('role', ['ADMIN', 'MANAGER', 'FINANCE', 'USER']).defaultTo('USER')
+      table.integer('transaction_id').unsigned().references('id').inTable('transactions')
+      table.integer('product_id').unsigned().references('id').inTable('products')
+      table.integer('quantity').notNullable()
+      table.integer('unit_amount').notNullable() // preço no momento da compra
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })
