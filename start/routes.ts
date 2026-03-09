@@ -2,21 +2,11 @@ import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
 
-// ========================
-// PUBLIC ROUTES
-// ========================
 router.post('/login', [controllers.Auth, 'login'])
-router.post('/signup', [controllers.NewAccount, 'store'])
 router.post('/purchase', [controllers.Transactions, 'purchase'])
 
-// ========================
-// PRIVATE ROUTES
-// ========================
 router
   .group(() => {
-    router.post('/logout', [controllers.Auth, 'logout'])
-
-    // Transactions
     router.get('/transactions', [controllers.Transactions, 'index'])
     router.get('/transactions/:id', [controllers.Transactions, 'show'])
     router
@@ -25,7 +15,6 @@ router
       })
       .use(middleware.role(['ADMIN', 'FINANCE']))
 
-    // Products (ADMIN, MANAGER, FINANCE can manage)
     router
       .group(() => {
         router.get('/products', [controllers.Products, 'index'])
@@ -36,7 +25,6 @@ router
       })
       .use(middleware.role(['ADMIN', 'MANAGER', 'FINANCE']))
 
-    // Users (ADMIN, MANAGER can manage)
     router
       .group(() => {
         router.get('/users', [controllers.Users, 'index'])
@@ -47,13 +35,12 @@ router
       })
       .use(middleware.role(['ADMIN', 'MANAGER']))
 
-    // Clients (all authenticated users)
     router.get('/clients', [controllers.Clients, 'index'])
     router.get('/clients/:id', [controllers.Clients, 'show'])
 
-    // Gateways (ADMIN only)
     router
       .group(() => {
+        router.get('/gateways', [controllers.Gateways, 'index'])
         router.patch('/gateways/:id/toggle', [controllers.Gateways, 'toggle'])
         router.patch('/gateways/:id/priority', [controllers.Gateways, 'updatePriority'])
       })

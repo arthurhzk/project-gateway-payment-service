@@ -4,9 +4,9 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 export default class extends BaseSeeder {
   async run() {
     await Product.updateOrCreateMany('name', [
-      { name: 'Product A', amount: 1000 },
-      { name: 'Product B', amount: 2500 },
-      { name: 'Product C', amount: 500 },
+      { name: 'Produto A', amount: 1000 },
+      { name: 'Produto B', amount: 2500 },
+      { name: 'Produto C', amount: 500 },
     ])
   }
 }
