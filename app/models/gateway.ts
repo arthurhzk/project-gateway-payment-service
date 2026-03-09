@@ -19,4 +19,22 @@ export default class Gateway extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  static async getActiveOrderedByPriority() {
+    return Gateway.query().where('is_active', true).orderBy('priority', 'asc')
+  }
+
+  static async toggle(id: number) {
+    const gateway = await Gateway.findOrFail(id)
+    gateway.isActive = !gateway.isActive
+    await gateway.save()
+    return gateway
+  }
+
+  static async updatePriority(id: number, priority: number) {
+    const gateway = await Gateway.findOrFail(id)
+    gateway.priority = priority
+    await gateway.save()
+    return gateway
+  }
 }

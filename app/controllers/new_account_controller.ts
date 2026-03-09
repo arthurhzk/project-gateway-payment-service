@@ -16,3 +16,7 @@ export default class NewAccountController {
     })
   }
 }
+
+export function store(ctx: HttpContext): any {
+  throw new Error('Function not implemented.')
+}
