@@ -5,9 +5,7 @@ type ParamValue = string | number | bigint | boolean
 export type ScannedRoutes = {
   ALL: {
     'auth.login': { paramsTuple?: []; params?: {} }
-    'new_account.store': { paramsTuple?: []; params?: {} }
     'transactions.purchase': { paramsTuple?: []; params?: {} }
-    'auth.logout': { paramsTuple?: []; params?: {} }
     'transactions.index': { paramsTuple?: []; params?: {} }
     'transactions.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'transactions.refund': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -23,14 +21,13 @@ export type ScannedRoutes = {
     'users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'clients.index': { paramsTuple?: []; params?: {} }
     'clients.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'gateways.index': { paramsTuple?: []; params?: {} }
     'gateways.toggle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'gateways.update_priority': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   POST: {
     'auth.login': { paramsTuple?: []; params?: {} }
-    'new_account.store': { paramsTuple?: []; params?: {} }
     'transactions.purchase': { paramsTuple?: []; params?: {} }
-    'auth.logout': { paramsTuple?: []; params?: {} }
     'transactions.refund': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'products.store': { paramsTuple?: []; params?: {} }
     'users.store': { paramsTuple?: []; params?: {} }
@@ -44,6 +41,7 @@ export type ScannedRoutes = {
     'users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'clients.index': { paramsTuple?: []; params?: {} }
     'clients.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'gateways.index': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'transactions.index': { paramsTuple?: []; params?: {} }
@@ -54,6 +52,7 @@ export type ScannedRoutes = {
     'users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'clients.index': { paramsTuple?: []; params?: {} }
     'clients.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'gateways.index': { paramsTuple?: []; params?: {} }
   }
   PUT: {
     'products.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

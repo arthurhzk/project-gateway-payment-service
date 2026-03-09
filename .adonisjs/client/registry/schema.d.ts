@@ -19,18 +19,6 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/auth_controller').default['login']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'new_account.store': {
-    methods: ["POST"]
-    pattern: '/signup'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/user').signupValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/user').signupValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
   'transactions.purchase': {
     methods: ["POST"]
     pattern: '/purchase'
@@ -41,18 +29,6 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/purchase').purchaseValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/transactions_controller').default['purchase']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/transactions_controller').default['purchase']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'auth.logout': {
-    methods: ["POST"]
-    pattern: '/logout'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/auth_controller').default['logout']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/auth_controller').default['logout']>>>
     }
   }
   'transactions.index': {
@@ -233,6 +209,18 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/clients_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/clients_controller').default['show']>>>
+    }
+  }
+  'gateways.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/gateways'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/gateways_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/gateways_controller').default['index']>>>
     }
   }
   'gateways.toggle': {

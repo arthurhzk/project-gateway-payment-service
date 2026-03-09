@@ -4,10 +4,6 @@ import type { routes } from './index.ts'
 export interface ApiDefinition {
   auth: {
     login: typeof routes['auth.login']
-    logout: typeof routes['auth.logout']
-  }
-  newAccount: {
-    store: typeof routes['new_account.store']
   }
   transactions: {
     purchase: typeof routes['transactions.purchase']
@@ -34,6 +30,7 @@ export interface ApiDefinition {
     show: typeof routes['clients.show']
   }
   gateways: {
+    index: typeof routes['gateways.index']
     toggle: typeof routes['gateways.toggle']
     updatePriority: typeof routes['gateways.update_priority']
   }

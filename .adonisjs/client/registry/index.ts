@@ -12,23 +12,11 @@ const routes = {
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['auth.login']['types'],
   },
-  'new_account.store': {
-    methods: ["POST"],
-    pattern: '/signup',
-    tokens: [{"old":"/signup","type":0,"val":"signup","end":""}],
-    types: placeholder as Registry['new_account.store']['types'],
-  },
   'transactions.purchase': {
     methods: ["POST"],
     pattern: '/purchase',
     tokens: [{"old":"/purchase","type":0,"val":"purchase","end":""}],
     types: placeholder as Registry['transactions.purchase']['types'],
-  },
-  'auth.logout': {
-    methods: ["POST"],
-    pattern: '/logout',
-    tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
-    types: placeholder as Registry['auth.logout']['types'],
   },
   'transactions.index': {
     methods: ["GET","HEAD"],
@@ -119,6 +107,12 @@ const routes = {
     pattern: '/clients/:id',
     tokens: [{"old":"/clients/:id","type":0,"val":"clients","end":""},{"old":"/clients/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['clients.show']['types'],
+  },
+  'gateways.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/gateways',
+    tokens: [{"old":"/gateways","type":0,"val":"gateways","end":""}],
+    types: placeholder as Registry['gateways.index']['types'],
   },
   'gateways.toggle': {
     methods: ["PATCH"],
