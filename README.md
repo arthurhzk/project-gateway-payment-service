@@ -33,7 +33,7 @@ Credenciais do mock (já configuradas no `.env.example`):
 
 ## Collections para teste
 
-O projeto inclui collections do Postman para testar a API. Importe o arquivo `postman_collection.json` (ou `payment_collection.json`) no Postman ou Insomnia. A collection inclui as rotas públicas e privadas, e o Login salva o token automaticamente para as requisições autenticadas.
+O projeto inclui collections do Postman para testar a API. Importe o arquivo `postman_collection.json` e `payment_collection.json` no Postman. A collection inclui as rotas públicas e privadas, e o Login salva o token automaticamente para as requisições autenticadas.
 
 ## Rotas
 
