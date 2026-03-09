@@ -24,12 +24,16 @@ node ace serve --hmr
 ## Mocks dos gateways
 
 ```bash
-docker run -p 3001:3001 -p 3002:3002 matheusprotzen/gateways-mock
+docker compose up -d
 ```
 
 Credenciais do mock (já configuradas no `.env.example`):
 - **Gateway 1**: email `dev@betalent.tech`, token `FEC9BB078BF338F464F96B48089EB498`
 - **Gateway 2**: headers `Gateway-Auth-Token=tk_f2198cc671b5289fa856`, `Gateway-Auth-Secret=3d15e8ed6131446ea7e3456728b1211f`
+
+## Collections para teste
+
+O projeto inclui collections do Postman para testar a API. Importe o arquivo `postman_collection.json` (ou `payment_collection.json`) no Postman ou Insomnia. A collection inclui as rotas públicas e privadas, e o Login salva o token automaticamente para as requisições autenticadas.
 
 ## Rotas
 
