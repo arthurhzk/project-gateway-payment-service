@@ -1,15 +1,14 @@
 import type User from '#models/user'
-import { BaseTransformer } from '@adonisjs/core/transformers'
 
-export default class UserTransformer extends BaseTransformer<User> {
-  toObject() {
-    return this.pick(this.resource, [
-      'id',
-      'fullName',
-      'email',
-      'createdAt',
-      'updatedAt',
-      'initials',
-    ])
+export default class UserTransformer {
+  static transform(user: User) {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    }
   }
 }

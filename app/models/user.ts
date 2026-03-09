@@ -1,8 +1,16 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
-import { column, beforeSave, BaseModel } from '@adonisjs/lucid/orm'
+import { column, BaseModel } from '@adonisjs/lucid/orm'
+import { compose } from '@adonisjs/core/helpers'
+import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
+import { DbAccessTokensProvider, AccessToken } from '@adonisjs/auth/access_tokens'
 
-export default class User extends BaseModel {
+const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
+  uids: ['email'],
+  passwordColumnName: 'password',
+})
+
+export default class User extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
   declare id: number
 
@@ -24,10 +32,44 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  @beforeSave()
-  static async hashPassword(user: User) {
-    if (user.$dirty.password) {
-      user.password = await hash.make(user.password)
-    }
+  currentAccessToken?: AccessToken
+
+  static accessTokens = DbAccessTokensProvider.forModel(User)
+
+  static async getAll() {
+    return User.all()
+  }
+
+  static async getById(id: number) {
+    return User.findOrFail(id)
+  }
+
+  static async createUser(data: {
+    name: string
+    email: string
+    password: string
+    role?: 'ADMIN' | 'MANAGER' | 'FINANCE' | 'USER'
+  }) {
+    return User.create(data)
+  }
+
+  static async updateUser(
+    id: number,
+    data: Partial<{
+      name: string
+      email: string
+      password: string
+      role: 'ADMIN' | 'MANAGER' | 'FINANCE' | 'USER'
+    }>
+  ) {
+    const user = await User.findOrFail(id)
+    user.merge(data)
+    await user.save()
+    return user
+  }
+
+  static async deleteUser(id: number) {
+    const user = await User.findOrFail(id)
+    await user.delete()
   }
 }

@@ -1,37 +1,62 @@
-/*
-|--------------------------------------------------------------------------
-| Routes file
-|--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
-*/
-
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
 
-router.get('/', () => {
-  return { hello: 'world' }
-})
+// ========================
+// PUBLIC ROUTES
+// ========================
+router.post('/login', [controllers.Auth, 'login'])
+router.post('/signup', [controllers.NewAccount, 'store'])
+router.post('/purchase', [controllers.Transactions, 'purchase'])
 
+// ========================
+// PRIVATE ROUTES
+// ========================
 router
   .group(() => {
-    router
-      .group(() => {
-        router.post('signup', [controllers.NewAccount, 'store'])
-        router.post('login', [controllers.AccessToken, 'store'])
-        router.post('logout', [controllers.AccessToken, 'destroy']).use(middleware.auth())
-      })
-      .prefix('auth')
-      .as('auth')
+    router.post('/logout', [controllers.Auth, 'logout'])
 
+    // Transactions
+    router.get('/transactions', [controllers.Transactions, 'index'])
+    router.get('/transactions/:id', [controllers.Transactions, 'show'])
     router
       .group(() => {
-        router.get('/profile', [controllers.Profile, 'show'])
+        router.post('/transactions/:id/refund', [controllers.Transactions, 'refund'])
       })
-      .prefix('account')
-      .as('profile')
-      .use(middleware.auth())
+      .use(middleware.role(['ADMIN', 'FINANCE']))
+
+    // Products (ADMIN, MANAGER, FINANCE can manage)
+    router
+      .group(() => {
+        router.get('/products', [controllers.Products, 'index'])
+        router.post('/products', [controllers.Products, 'store'])
+        router.get('/products/:id', [controllers.Products, 'show'])
+        router.put('/products/:id', [controllers.Products, 'update'])
+        router.delete('/products/:id', [controllers.Products, 'destroy'])
+      })
+      .use(middleware.role(['ADMIN', 'MANAGER', 'FINANCE']))
+
+    // Users (ADMIN, MANAGER can manage)
+    router
+      .group(() => {
+        router.get('/users', [controllers.Users, 'index'])
+        router.post('/users', [controllers.Users, 'store'])
+        router.get('/users/:id', [controllers.Users, 'show'])
+        router.put('/users/:id', [controllers.Users, 'update'])
+        router.delete('/users/:id', [controllers.Users, 'destroy'])
+      })
+      .use(middleware.role(['ADMIN', 'MANAGER']))
+
+    // Clients (all authenticated users)
+    router.get('/clients', [controllers.Clients, 'index'])
+    router.get('/clients/:id', [controllers.Clients, 'show'])
+
+    // Gateways (ADMIN only)
+    router
+      .group(() => {
+        router.patch('/gateways/:id/toggle', [controllers.Gateways, 'toggle'])
+        router.patch('/gateways/:id/priority', [controllers.Gateways, 'updatePriority'])
+      })
+      .use(middleware.role(['ADMIN']))
   })
-  .prefix('/api/v1')
+  .use(middleware.auth())
