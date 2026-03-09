@@ -23,6 +23,6 @@ export default class UsersController {
 
   async destroy({ params, response }: HttpContext) {
     await User.deleteUser(params.id)
-    return response.ok({ message: 'User deleted successfully' })
+    return response.ok({ message: 'Usuário excluído com sucesso' })
   }
 }
