@@ -30,7 +30,7 @@ export default class PaymentService {
     const gateways = await Gateway.getActiveOrderedByPriority()
 
     if (gateways.length === 0) {
-      throw new Error('No active payment gateways available')
+      throw new Error('Nenhum gateway de pagamento ativo disponível')
     }
 
     const errors: string[] = []
@@ -38,7 +38,7 @@ export default class PaymentService {
     for (const gateway of gateways) {
       const service = this.gatewayServices.get(gateway.name)
       if (!service) {
-        errors.push(`Gateway ${gateway.name}: service not implemented`)
+        errors.push(`Gateway ${gateway.name}: serviço não implementado`)
         continue
       }
 
@@ -65,13 +65,13 @@ export default class PaymentService {
       }
     }
 
-    throw new Error(`All payment gateways failed: ${errors.join('; ')}`)
+    throw new Error(`Todos os gateways de pagamento falharam: ${errors.join('; ')}`)
   }
 
   async refund(gatewayName: string, externalId: string): Promise<void> {
     const service = this.gatewayServices.get(gatewayName)
     if (!service) {
-      throw new Error(`Gateway ${gatewayName} service not implemented`)
+      throw new Error(`Gateway ${gatewayName} serviço não implementado`)
     }
 
     await service.refund(externalId)
