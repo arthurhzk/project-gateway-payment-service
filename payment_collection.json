@@ -1,0 +1,394 @@
+{
+    "info": {
+      "name": "Gateway Payment API",
+      "description": "Collection para testar a API Multi-Gateway Payment",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:3333"
+      },
+      {
+        "key": "token",
+        "value": ""
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{token}}",
+          "type": "string"
+        }
+      ]
+    },
+    "item": [
+      {
+        "name": "Públicas",
+        "item": [
+          {
+            "name": "Login",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 200) {",
+                    "    const json = pm.response.json();",
+                    "    pm.collectionVariables.set('token', json.token);",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "request": {
+              "auth": {
+                "type": "noauth"
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"admin@betalent.tech\",\n  \"password\": \"password123\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/login",
+                "host": ["{{baseUrl}}"],
+                "path": ["login"]
+              },
+              "description": "Login com email e senha. Usuários seed: admin@betalent.tech, manager@betalent.tech, finance@betalent.tech, user@betalent.tech — senha: password123"
+            }
+          },
+          {
+            "name": "Purchase",
+            "request": {
+              "auth": {
+                "type": "noauth"
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"clientName\": \"João Silva\",\n  \"clientEmail\": \"joao@email.com\",\n  \"cardNumber\": \"4111111111111111\",\n  \"cvv\": \"123\",\n  \"products\": [\n    { \"id\": 1, \"quantity\": 2 },\n    { \"id\": 2, \"quantity\": 1 }\n  ]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/purchase",
+                "host": ["{{baseUrl}}"],
+                "path": ["purchase"]
+              },
+              "description": "Realizar compra. cardNumber: 16 dígitos, cvv: 3-4 dígitos. products: array de { id, quantity }"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Transactions",
+        "item": [
+          {
+            "name": "Listar Transactions",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/transactions",
+                "host": ["{{baseUrl}}"],
+                "path": ["transactions"]
+              }
+            }
+          },
+          {
+            "name": "Show Transaction",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/transactions/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["transactions", "1"]
+              },
+              "description": "Substitua 1 pelo ID da transação"
+            }
+          },
+          {
+            "name": "Refund Transaction",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/transactions/1/refund",
+                "host": ["{{baseUrl}}"],
+                "path": ["transactions", "1", "refund"]
+              },
+              "description": "Reembolso. Requer role ADMIN ou FINANCE. Substitua 1 pelo ID da transação"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Products",
+        "item": [
+          {
+            "name": "Listar Products",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/products",
+                "host": ["{{baseUrl}}"],
+                "path": ["products"]
+              }
+            }
+          },
+          {
+            "name": "Create Product",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Produto Exemplo\",\n  \"amount\": 99.90\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/products",
+                "host": ["{{baseUrl}}"],
+                "path": ["products"]
+              },
+              "description": "Requer role ADMIN, MANAGER ou FINANCE"
+            }
+          },
+          {
+            "name": "Show Product",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/products/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["products", "1"]
+              }
+            }
+          },
+          {
+            "name": "Update Product",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Produto Atualizado\",\n  \"amount\": 149.90\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/products/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["products", "1"]
+              }
+            }
+          },
+          {
+            "name": "Delete Product",
+            "request": {
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/products/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["products", "1"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Listar Users",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/users",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"]
+              },
+              "description": "Requer role ADMIN ou MANAGER"
+            }
+          },
+          {
+            "name": "Create User",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Novo Usuário\",\n  \"email\": \"novo@email.com\",\n  \"password\": \"password123\",\n  \"role\": \"USER\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/users",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"]
+              },
+              "description": "role opcional: ADMIN, MANAGER, FINANCE, USER"
+            }
+          },
+          {
+            "name": "Show User",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/users/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "1"]
+              }
+            }
+          },
+          {
+            "name": "Update User",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Nome Atualizado\",\n  \"email\": \"atualizado@email.com\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/users/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "1"]
+              },
+              "description": "Todos os campos são opcionais: name, email, password, role"
+            }
+          },
+          {
+            "name": "Delete User",
+            "request": {
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/users/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "1"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Clients",
+        "item": [
+          {
+            "name": "Listar Clients",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/clients",
+                "host": ["{{baseUrl}}"],
+                "path": ["clients"]
+              }
+            }
+          },
+          {
+            "name": "Show Client",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/clients/1",
+                "host": ["{{baseUrl}}"],
+                "path": ["clients", "1"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Gateways",
+        "item": [
+          {
+            "name": "Listar Gateways",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/gateways",
+                "host": ["{{baseUrl}}"],
+                "path": ["gateways"]
+              },
+              "description": "Requer role ADMIN"
+            }
+          },
+          {
+            "name": "Toggle Gateway",
+            "request": {
+              "method": "PATCH",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/gateways/1/toggle",
+                "host": ["{{baseUrl}}"],
+                "path": ["gateways", "1", "toggle"]
+              },
+              "description": "Ativa/desativa gateway. Requer role ADMIN"
+            }
+          },
+          {
+            "name": "Update Gateway Priority",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"priority\": 1\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/gateways/1/priority",
+                "host": ["{{baseUrl}}"],
+                "path": ["gateways", "1", "priority"]
+              },
+              "description": "Altera prioridade do gateway (número >= 1). Requer role ADMIN"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  
